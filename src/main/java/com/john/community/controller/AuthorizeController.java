@@ -1,10 +1,10 @@
-package com.john.community.community.controller;
+package com.john.community.controller;
 
-import com.john.community.community.dto.AccessTokenDTO;
-import com.john.community.community.dto.GithubUser;
-import com.john.community.community.mapper.UserMapper;
-import com.john.community.community.model.User;
-import com.john.community.community.provider.GithubProvider;
+import com.john.community.dto.AccessTokenDTO;
+import com.john.community.dto.GithubUser;
+import com.john.community.mapper.UserMapper;
+import com.john.community.model.User;
+import com.john.community.provider.GithubProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -42,7 +42,7 @@ public class AuthorizeController {
         accessTokenDTO.setState(state);
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
         GithubUser githubUser =githubProvider.getUser(accessToken);
-        if(githubUser !=null){
+        if(githubUser !=null &&githubUser.getId()!=null){
             User user = new User();
             String token = UUID.randomUUID().toString();
             user.setToken(token);
@@ -50,6 +50,7 @@ public class AuthorizeController {
             user.setAccountId(String.valueOf(githubUser.getId()));
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
+            user.setAvatarUrl(githubUser.getAvatarUrl());
             userMapper.insert(user);
 
             //登录成功,写入cookie 和session

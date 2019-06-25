@@ -1,4 +1,4 @@
-package com.john.community.community;
+package com.john.community;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
